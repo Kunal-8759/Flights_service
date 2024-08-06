@@ -5,13 +5,9 @@ class CrudRepository{
     }
 
     async create(data){
-        try {
-            const response=await this.model.create(data);
-            return response;
-        } catch (error) {
-            console.log('error while creating the data in the repository');
-            throw error;
-        }
+        const response=await this.model.create(data);
+        return response;
+        //if any Error comes here this gets transferred to the Service layer
     }
 
     async delete(data){

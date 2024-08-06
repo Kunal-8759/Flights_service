@@ -1,5 +1,7 @@
 
+const { StatusCodes } = require('http-status-codes');
 const {AirplaneRepository}=require('../repositories');
+const AppError = require('../utils/Errors/app.error');
 
 const airplaneRespository=new AirplaneRepository();
 
@@ -9,8 +11,16 @@ async function createAirplane(data){
         const airplane=await airplaneRespository.create(data);
         return airplane;
     } catch (error) {
-        console.log(error);
-        throw error;
+        if(error.name == 'SeuelizeValidationError'){
+            let explanantion=[];
+            error.errors.forEach((err)=>{
+                explanantion.push(err.message);
+            })
+
+            throw new AppError(explanantion,StatusCodes.BAD_REQUEST);
+        }
+
+        throw new AppError('Cannot create a new Airplane Object',StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
 
