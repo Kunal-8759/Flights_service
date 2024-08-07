@@ -1,3 +1,5 @@
+const { StatusCodes } = require("http-status-codes");
+const AppError = require("../utils/Errors/app.error");
 
 class CrudRepository{
     constructor(model){
@@ -38,24 +40,17 @@ class CrudRepository{
         }
     }
 
-    async getAll(){
-        try {
-            const response=await this.model.findAll();
-            return response;
-        } catch (error) {
-            console.log('error while getting the data in the repository');
-            throw error;
-        }
+    async getAll(){  
+        const response=await this.model.findAll();
+        return response;  
     }
 
     async get(id){
-        try {
-            const response =await this.model.findByPk(id);
-            return response;
-        } catch (error) {
-            console.log('error while getting the data in the repository');
-            throw error;
+        const response =await this.model.findByPk(id);
+        if(!response){
+            throw new AppError('the resource you requested is not present',StatusCodes.NOT_FOUND);
         }
+        return response;
     }
     
 
