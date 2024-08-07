@@ -28,6 +28,12 @@ module.exports = {
         capacity:222,
         createdAt: new Date(),
         updatedAt: new Date(),
+      },
+      {
+        ModelNo:'airbus-c11',
+        capacity:1200,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }
     ])
   },
