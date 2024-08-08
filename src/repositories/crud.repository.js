@@ -12,18 +12,19 @@ class CrudRepository{
         //if any Error comes here this gets transferred to the Service layer
     }
 
-    async delete(data){
-        try {
-            const response=await this.model.destroy({
-                where:{
-                    id:data
-                }
-            });
-            return response;
-        } catch (error) {
-            console.log('error while deleting the data in the repository');
-            throw error;
+    async destroy(id){
+        const response=await this.model.destroy({
+            where:{
+                id:id
+            }
+        });
+
+        if(!response){
+            throw new AppError('The resource you want to delete is not present',StatusCodes.NOT_FOUND);
         }
+        return response;
+
+        
     }
 
     async update(data){ //data:{col1:val1 ,col2:val2}

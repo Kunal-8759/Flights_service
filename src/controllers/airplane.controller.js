@@ -59,8 +59,28 @@ async function getAirplane(req,res){
     }
 }
 
+async function destroyAirplane(req,res){
+    try {
+        const response = await AirplaneService.destroyAirplane(req.params.id);
+        return res.status(StatusCodes.OK).json({
+            success:true,
+            message:" airplanes deleted successfully",
+            data:response,
+            error:{}
+        });
+    } catch (error) {
+        return res.status(error.statusCode).json({
+            success:false,
+            message:"something went wrong",
+            data:{},
+            error:error
+        });
+    }
+}
+
 module.exports={
     createAirplane,
     getAllAirplane,
-    getAirplane
+    getAirplane,
+    destroyAirplane
 }

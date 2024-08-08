@@ -45,8 +45,21 @@ async function getAirplane(id){
     }
 }
 
+async function destroyAirplane(id){
+    try {
+        const response = await airplaneRespository.destroy(id);
+        return response;
+    } catch (error) {
+        if(error.statusCode==StatusCodes.NOT_FOUND){
+            throw new AppError('The airplane youn want to destroy is not present',error.statusCode);
+        }
+        throw new AppError('Cannot able to get the airplane',StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
 module.exports={
     createAirplane,
     getAllAirplane,
-    getAirplane
+    getAirplane,
+    destroyAirplane
 }
