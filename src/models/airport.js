@@ -4,13 +4,13 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Airport extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    
     static associate(models) {
       // define association here
+      //one airport should belong to one city only -->thats why one-to-one relationship done through belongsTo
+      this.belongsTo(models.City,{
+        foreignKey:'cityId'
+      });
     }
   }
   Airport.init({
