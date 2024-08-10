@@ -6,11 +6,23 @@ module.exports = (sequelize, DataTypes) => {
   class Airport extends Model {
     
     static associate(models) {
-      // define association here
-      //one airport should belong to one city only -->thats why one-to-one relationship done through belongsTo
+      //one airport should belong to one city only 
       this.belongsTo(models.City,{
         foreignKey:'cityId'
       });
+
+      //from one airport many flights departure can takes place
+      this.hasMany(models.Flight, {
+        foreignKey: 'departureAirportId',
+        onDelete: 'CASCADE'
+      });
+
+      //from one airport many flights arrival can take place
+      this.hasMany(models.Flight, {
+        foreignKey: 'arrivalAirportId',
+        onDelete: 'CASCADE'
+      });
+
     }
   }
   Airport.init({
