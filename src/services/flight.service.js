@@ -49,8 +49,8 @@ async function createFlight(data){
 async function getAllFlights(query){
     let customFilter={};
     let sortFilter=[];
-    const endDateTime = "23:59:00";
-    const startDateTime = "00:00:00";
+    const endDateTime = " 23:59:00";
+    const startDateTime = " 00:00:00";
 
     if(query.trips){
         [departureAirportId,arrivalAirportId]=query.trips.split("-");
@@ -70,6 +70,7 @@ async function getAllFlights(query){
         }
     }
     if(query.tripDate){
+        console.log(query.tripDate + endDateTime);
         customFilter.departureTime={
             [Op.between]:[query.tripDate + startDateTime ,query.tripDate + endDateTime]
         }

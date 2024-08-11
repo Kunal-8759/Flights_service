@@ -8,15 +8,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //one flight require one airplane only 
       this.belongsTo(models.Airplane,{
-        foreignKey:'airplaneId'
+        foreignKey:'airplaneId',
+        as : 'airplaneDetail'//the second table from which the airplaneid is fetching is called as airplaneDetails for now
       });
       //one flight will departure from one airport only
       this.belongsTo(models.Airport, {
-        foreignKey: 'departureAirportId'
+        foreignKey: 'departureAirportId',
+        as : 'departureAirport'
       });
       //one flight will arrive on one airport only
       this.belongsTo(models.Airport, {
-        foreignKey: 'arrivalAirportId'
+        foreignKey: 'arrivalAirportId',
+        as : 'arrivalAirport'
       });
 
     }

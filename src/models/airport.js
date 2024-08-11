@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //one airport should belong to one city only 
       this.belongsTo(models.City,{
-        foreignKey:'cityId'
+        foreignKey:'cityId',
+        as:'city'
       });
 
       //from one airport many flights departure can takes place
