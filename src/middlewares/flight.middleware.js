@@ -70,6 +70,19 @@ function validateCreateRequest(req,res,next){
     
 }
 
+function validateUpdateSeatsRequest(req, res, next) {
+    if(!req.body.seats) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            sucess:false,
+            message:"something went wrong while updating Seats",
+            error:new AppError('seats not found in the incoming request in the Correct Form',StatusCodes.BAD_REQUEST),
+            data:{}
+        });        
+    }
+    next();
+}
+
 module.exports={
     validateCreateRequest,
+    validateUpdateSeatsRequest
 }

@@ -105,9 +105,22 @@ async function getFlight(id){
     }
 }
 
+async function updateRemainingSeat(data){
+    try {
+        const response = await flightRespository.updateRemainingSeat(data.flightId,data.seats,data.dec);
+        return response;
+    } catch (error) {
+        if(error.message == 'Not-enough-seat-available'){
+            throw new AppError('The number of seat you requested is not available',StatusCodes.BAD_REQUEST);
+        }
+        throw new AppError('Cannot update data of the flight',StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
 module.exports={
     createFlight,
     getAllFlights,
-    getFlight
+    getFlight,
+    updateRemainingSeat
     
 }

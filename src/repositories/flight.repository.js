@@ -1,6 +1,9 @@
 const {Sequelize}=require('sequelize');
 const CrudRepository = require("./crud.repository");
 const {Flight,Airplane,City,Airport} = require('../models');
+const db=require('../models');
+const {addRowLockOnFlights} =require('./queries');
+
 const AppError = require("../utils/Errors/app.error");
 const { StatusCodes } = require("http-status-codes");
 
@@ -74,6 +77,22 @@ class FlightRepository extends CrudRepository{
             });
             return response;
         }
+    }
+
+    async  updateRemainingSeat(flightId,seats,dec=true){
+        await db.sequelize.query(addRowLockOnFlights(flightId));//this will add lock on the specific flight having the flightId
+        const flight=await Flight.findByPk(flightId);//get the flight object with the corresponding flightId
+
+        if(parseInt(dec)){//in case of booking the flight will decrease the total seat left
+            if (flight.totalSeats < seats) {
+                throw new Error('Not-enough-seat-available');
+            }
+            await flight.decrement('totalSeats',{by:seats});
+        }
+        else{//in case of cancellation will increase the totalseat of the flight
+            await flight.increment('totalSeats',{by:seats});
+        }
+        return flight;
     }
 }
 
