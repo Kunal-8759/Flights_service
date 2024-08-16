@@ -1,7 +1,7 @@
 const {Sequelize}=require('sequelize');
 const CrudRepository = require("./crud.repository");
 const {Flight,Airplane,City,Airport} = require('../models');
-const db=require('../models');
+const db = require('../models');
 const {addRowLockOnFlights} =require('./queries');
 
 const AppError = require("../utils/Errors/app.error");
@@ -80,9 +80,7 @@ class FlightRepository extends CrudRepository{
     }
 
     async updateRemainingSeat(flightId,seats,dec=true){
-        //unmanaged transaction
-        const transaction = await db.Sequelize.transaction();
-        
+        const transaction = await db.sequelize.transaction();
         try {
             await db.sequelize.query(addRowLockOnFlights(flightId));//this will add lock on the specific flight having the flightId
             const flight=await Flight.findByPk(flightId);//get the flight object with the corresponding flightId
@@ -93,7 +91,7 @@ class FlightRepository extends CrudRepository{
             else{//in case of cancellation will increase the totalseat of the flight
                 await flight.increment('totalSeats',{by:seats},{transaction:transaction});
             }
-
+            
             transaction.commit();
             return flight;
         } catch (error) {
