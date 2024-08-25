@@ -16,8 +16,12 @@ async function createFlight(data){
         }
         throw new AppError('TimeConstraintProblem',StatusCodes.BAD_REQUEST);
     } catch (error) {
+        console.log(error);
         if(error.message == 'TimeConstraintProblem'){
             throw new AppError('Arrival Time cant be less than Departure Time',StatusCodes.BAD_REQUEST);
+        }
+        if(error.name == 'SequelizeForeignKeyConstraintError'){
+            throw new AppError('The data you given is not present in the associated table',StatusCodes.BAD_REQUEST);
         }
         if(error.name == 'SequelizeValidationError'){
             let explanantion=[];
